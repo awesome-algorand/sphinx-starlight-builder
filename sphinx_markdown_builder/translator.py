@@ -197,6 +197,16 @@ class MarkdownTranslator(SphinxTranslator):  # pylint: disable=too-many-public-m
         assert len(self._ctx_queue) == 1
 
         ctx = SubContext()
+        
+        # Generate frontmatter
+        title = posixpath.basename(self.builder.current_doc_name)
+        frontmatter = f"title: \"{title}\""
+        
+        ctx.add("---", prefix_eol=0, suffix_eol=1)
+        ctx.add(frontmatter, prefix_eol=0, suffix_eol=1)
+        ctx.add("---", prefix_eol=0, suffix_eol=2)
+
+        # Add the rest of the document
         for sub_ctx in (self._doc_info, self._ctx_queue[0]):
             ctx.add(sub_ctx.make().strip(), prefix_eol=2, suffix_eol=1)
         ctx.force_eol(1)
