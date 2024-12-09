@@ -49,7 +49,7 @@ from sphinx_markdown_builder.contexts import (
     UniqueString,
     WrappedContext,
     FootNoteContext,
-    BoxContext,
+    AsideContext,
 )
 from sphinx_markdown_builder.escape import escape_html_quote, escape_markdown_chars
 
@@ -171,9 +171,9 @@ class MarkdownTranslator(SphinxTranslator):  # pylint: disable=too-many-public-m
             ctx = self.ctx if last_ctx.params.target == "body" else self._doc_info
             ctx.add(last_ctx.make(), last_ctx.params.prefix_eol, last_ctx.params.suffix_eol)
 
-    def _push_box(self, title: str):
-        """Create a box with a title for MDX output"""
-        self._push_context(BoxContext(title))
+    def _push_aside(self, title: str):
+        """Create an aside for MDX output"""
+        self._push_context(AsideContext(title))
 
     @property
     def status(self) -> ContextStatus:
@@ -317,26 +317,26 @@ class MarkdownTranslator(SphinxTranslator):  # pylint: disable=too-many-public-m
     @pushing_context
     def visit_important(self, _node):
         """Sphinx important directive."""
-        self._push_box("IMPORTANT")
+        self._push_aside("IMPORTANT")
 
     @pushing_context
     def visit_warning(self, _node):
         """Sphinx warning directive."""
-        self._push_box("WARNING")
+        self._push_aside("WARNING")
 
     @pushing_context
     def visit_note(self, _node):
         """Sphinx note directive."""
-        self._push_box("NOTE")
+        self._push_aside("NOTE")
 
     @pushing_context
     def visit_seealso(self, _node):
         """Sphinx see also directive."""
-        self._push_box("SEE ALSO")
+        self._push_aside("SEE ALSO")
 
     @pushing_context
     def visit_attention(self, _node):
-        self._push_box("ATTENTION")
+        self._push_aside("ATTENTION")
 
     def visit_image(self, node):
         """Image directive."""
@@ -685,7 +685,7 @@ class MarkdownTranslator(SphinxTranslator):  # pylint: disable=too-many-public-m
         Type will hold something like 'deprecated'
         """
         node_type = node.attributes["type"].capitalize()
-        self._push_box(node_type)
+        self._push_aside(node_type)
 
     ################################################################################
     # tables

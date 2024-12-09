@@ -389,11 +389,11 @@ class FootNoteContext(NoLineBreakContext):
         return f"* <a id='{self.ids}'>**[{label}]**</a> {content}"
 
 
-class BoxContext(SubContext):
-    """Context for MDX boxes (important, warning, note, etc.)"""
-    def __init__(self, box_type: str, params: SubContextParams = SubContextParams()):
+class AsideContext(SubContext):
+    """Context for Starlight asides"""
+    def __init__(self, aside_type: str, params: SubContextParams = SubContextParams()):
         super().__init__(params)
-        self.box_type = box_type
+        self.aside_type = aside_type
 
     def make(self) -> str:
         content = super().make()
@@ -412,8 +412,8 @@ class BoxContext(SubContext):
             "SEE ALSO": {"type": "tip", "title": "See Also"},
         }
 
-        type = sphinx_aside_mapping[self.box_type]['type']
-        title = sphinx_aside_mapping[self.box_type]['title']
+        type = sphinx_aside_mapping[self.aside_type]['type']
+        title = sphinx_aside_mapping[self.aside_type]['title']
         return f"<Aside type=\"{type}\" title=\"{title}\">{content}</Aside>"
 
 
