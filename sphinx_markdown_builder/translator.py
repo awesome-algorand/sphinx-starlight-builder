@@ -133,6 +133,8 @@ def pushing_status(method):
 class MarkdownTranslator(SphinxTranslator):  # pylint: disable=too-many-public-methods
     def __init__(self, document: nodes.document, builder: "MarkdownBuilder"):
         super().__init__(document, builder)
+        # Tracks whether we've added an aside or not so we know if we need to import the Aside component
+        self._has_aside = False
         self.builder: "MarkdownBuilder" = builder
         # noinspection PyUnresolvedReferences
         self.language = languages.get_language(self.settings.language_code, document.reporter)
@@ -173,6 +175,7 @@ class MarkdownTranslator(SphinxTranslator):  # pylint: disable=too-many-public-m
 
     def _push_aside(self, title: str):
         """Create an aside for MDX output"""
+        self._has_aside = True
         self._push_context(AsideContext(title))
 
     @property
@@ -204,7 +207,11 @@ class MarkdownTranslator(SphinxTranslator):  # pylint: disable=too-many-public-m
         
         ctx.add("---", prefix_eol=0, suffix_eol=1)
         ctx.add(frontmatter, prefix_eol=0, suffix_eol=1)
-        ctx.add("---", prefix_eol=0, suffix_eol=2)
+        ctx.add("---", prefix_eol=0, suffix_eol=1)
+
+        # Handle imports
+        if self._has_aside:
+            ctx.add("import { Aside } from '@astrojs/starlight/components';", prefix_eol=0, suffix_eol=1)
 
         # Add the rest of the document
         for sub_ctx in (self._doc_info, self._ctx_queue[0]):
