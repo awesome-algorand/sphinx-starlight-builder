@@ -333,10 +333,19 @@ class TitleContext(NoLineBreakContext):
 
     @property
     def section_prefix(self):
-        return "#" * self.level
+        # Decrease the heading level for better starlight TOC
+        return "#" * (self.level - 1)
 
     def make(self):
+        # Don't make h1 because this is down by starlight based on the front matter
+        if self.level == 1:
+            return ""
+
+        # The first header is typically the only one at that level, so might as well remove it so we can decrease every other heading level
         content = super().make()
+        if content == "Package Contents" or content == "Module Contents":
+            return ""
+
         assert len(content) > 0, "Empty title"
         return f"{self.section_prefix} {content}"
 
