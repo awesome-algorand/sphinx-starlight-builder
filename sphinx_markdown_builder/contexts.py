@@ -380,6 +380,34 @@ class FootNoteContext(NoLineBreakContext):
         return f"* <a id='{self.ids}'>**[{label}]**</a> {content}"
 
 
+class BoxContext(SubContext):
+    """Context for MDX boxes (important, warning, note, etc.)"""
+    def __init__(self, box_type: str, params: SubContextParams = SubContextParams()):
+        super().__init__(params)
+        self.box_type = box_type
+
+    def make(self) -> str:
+        content = super().make()
+        
+        # note asides (the default) are blue and display an information icon.
+        # tip asides are purple and display a rocket icon.
+        # caution asides are yellow and display a triangular warning icon.
+        # danger asides are red and display an octagonal warning icon.
+        # https://starlight.astro.build/components/asides/
+
+        sphinx_aside_mapping = {
+            "IMPORTANT": {"type": "caution", "title": "Important"},
+            "NOTE": {"type": "note", "title": "Note"},
+            "WARNING": {"type": "caution", "title": "Warning"},
+            "ATTENTION": {"type": "caution", "title": "Attention"},
+            "SEE ALSO": {"type": "tip", "title": "See Also"},
+        }
+
+        type = sphinx_aside_mapping[self.box_type]['type']
+        title = sphinx_aside_mapping[self.box_type]['title']
+        return f"<Aside type=\"{type}\" title=\"{title}\">{content}</Aside>"
+
+
 _ContextT = TypeVar("_ContextT", bound=SubContext)
 
 Translator = Callable[[Any, Any], Dict[str, Any]]

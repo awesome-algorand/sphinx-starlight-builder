@@ -49,6 +49,7 @@ from sphinx_markdown_builder.contexts import (
     UniqueString,
     WrappedContext,
     FootNoteContext,
+    BoxContext,
 )
 from sphinx_markdown_builder.escape import escape_html_quote, escape_markdown_chars
 
@@ -171,8 +172,8 @@ class MarkdownTranslator(SphinxTranslator):  # pylint: disable=too-many-public-m
             ctx.add(last_ctx.make(), last_ctx.params.prefix_eol, last_ctx.params.suffix_eol)
 
     def _push_box(self, title: str):
-        self.add(f"#### {title}", prefix_eol=2)
-        self._push_context(SubContext(SubContextParams(1, 2)))
+        """Create a box with a title for MDX output"""
+        self._push_context(BoxContext(title))
 
     @property
     def status(self) -> ContextStatus:

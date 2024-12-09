@@ -43,7 +43,7 @@ class MarkdownBuilder(Builder):
     allow_parallel = True
     default_translator_class = MarkdownTranslator
 
-    out_suffix = ".md"
+    out_suffix = ".mdx"
 
     def __init__(self, app: Sphinx, env: BuildEnvironment = None):
         super().__init__(app, env)
