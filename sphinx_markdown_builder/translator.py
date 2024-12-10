@@ -635,6 +635,12 @@ class MarkdownTranslator(SphinxTranslator):  # pylint: disable=too-many-public-m
     def visit_desc(self, node):
         self._push_status(desc_type=node.attributes.get("desctype", ""))
 
+    def depart_desc_name(self, node):
+        # Pop the title context before we get to params so the header is just the method name
+        # This results in much cleaner TOC
+        self._pop_context()
+        self.add(node.astext())
+
     @pushing_context
     def visit_desc_signature(self, node):
         """the main signature of class/method"""
