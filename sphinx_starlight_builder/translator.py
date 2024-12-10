@@ -31,7 +31,7 @@ from typing import TYPE_CHECKING, Callable, Dict, List, Optional, Union
 from docutils import languages, nodes
 from sphinx.util.docutils import SphinxTranslator
 
-from sphinx_markdown_builder.contexts import (
+from sphinx_starlight_builder.contexts import (
     CommaSeparatedContext,
     ContextStatus,
     DocInfoContext,
@@ -51,10 +51,10 @@ from sphinx_markdown_builder.contexts import (
     FootNoteContext,
     AsideContext,
 )
-from sphinx_markdown_builder.escape import escape_html_quote, escape_markdown_chars
+from sphinx_starlight_builder.escape import escape_html_quote, escape_markdown_chars
 
 if TYPE_CHECKING:  # pragma: no cover
-    from sphinx_markdown_builder import MarkdownBuilder
+    from sphinx_starlight_builder import MarkdownBuilder
 
 VISIT_DEPART_PATTERN = re.compile("(visit|depart)_(.+)")
 SKIP = UniqueString("skip")

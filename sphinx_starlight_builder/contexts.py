@@ -11,7 +11,7 @@ from typing import Any, Callable, Dict, Generic, Iterator, List, Optional, Type,
 
 from tabulate import tabulate
 
-from sphinx_markdown_builder.escape import escape_html_quote
+from sphinx_starlight_builder.escape import escape_html_quote
 
 
 class UniqueString(str):

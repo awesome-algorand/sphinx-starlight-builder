@@ -8,8 +8,8 @@ import docutils.nodes
 import pytest
 import sphinx.util.logging
 
-from sphinx_markdown_builder.contexts import SubContext
-from sphinx_markdown_builder.translator import MarkdownTranslator
+from sphinx_starlight_builder.contexts import SubContext
+from sphinx_starlight_builder.translator import MarkdownTranslator
 
 
 def make_mock():

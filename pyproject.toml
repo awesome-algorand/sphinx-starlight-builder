@@ -1,15 +1,15 @@
-# sphinx-markdown-builder
+# sphinx-starlight-builder
 
 [build-system]
 requires = ["setuptools>=61.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "sphinx-markdown-builder"
+name = "sphinx-starlight-builder"
 version = "0.6.7"
-description = "A Sphinx extension to add markdown generation support."
+description = "A Sphinx extension to add starlight mdx generation support."
 readme = "README.md"
-authors = [{ name = "Liran Funaro", email = "liran.funaro@gmail.com" }]
+authors = [{ name = "Joe Polny", email = "joepolny@gmail.com" }]
 license = { text = "MIT" }
 classifiers = [
     "Programming Language :: Python",
@@ -25,10 +25,10 @@ requires-python = ">=3.7"
 [tool.poetry.plugins] # Optional super table
 
 [tool.poetry.plugins."sphinx.builders"]
-"markdown" = "sphinx_markdown_builder"
+"starlight" = "sphinx_starlight_builder"
 
 [project.entry-points."sphinx.builders"]
-"markdown" = "sphinx_markdown_builder"
+"starlight" = "sphinx_starlight_builder"
 
 [project.optional-dependencies]
 dev = [
@@ -38,10 +38,10 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/liran-funaro/sphinx-markdown-builder"
+Homepage = "https://github.com/joe-p/sphinx-starlight-builder"
 
 [tool.bumpver]
-current_version = "0.6.7"
+current_version = "0.1.0"
 version_pattern = "MAJOR.MINOR.PATCH[-TAG]"
 commit_message = "bump version {old_version} -> {new_version}"
 commit = true
@@ -54,12 +54,12 @@ push = false
     "version = \"{version}\"",
 ]
 "README.md" = [
-    "sphinx-markdown-builder=={version}",
+    "sphinx-starlight-builder=={version}",
 ]
 "LICENSE" = [
     "Copyright (c) 2023-YYYY, Liran Funaro.",
 ]
-"sphinx_markdown_builder/__init__.py" = [
+"sphinx_starlight_builder/__init__.py" = [
     "^__version__ = \"{version}\"$",
 ]
 "tests/source/conf.py" = [

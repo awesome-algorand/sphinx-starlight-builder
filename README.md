@@ -5,7 +5,7 @@ A Sphinx extension to add MDX generation support for starlight documentation web
 ## Install
 
 ```sh
-pip3 install sphinx-markdown-builder==0.6.7
+pip3 install sphinx-starlight-builder==0.6.7
 ```
 
 ## Usage
@@ -15,7 +15,7 @@ Add the extension to your `conf.py` file:
 ```python
 extensions = [
     ...,
-    "sphinx_markdown_builder",
+    "sphinx_starlight_builder",
     ...,
 ]
 ```
@@ -52,15 +52,15 @@ See the [code contribution guidelines](CONTRIBUTING.md) for more information.
 
 ## Credits
 
-This project forked from [iran-funaro/sphinx-markdown-builder], which forked from [clayrisser/sphinx-markdown-builder], which was developed by [Clay Risser] under the [MIT] license.
+This project forked from [iran-funaro/sphinx-starlight-builder], which forked from [clayrisser/sphinx-starlight-builder], which was developed by [Clay Risser] under the [MIT] license.
 
 The original implementation was based on [doctree2md] by [Matthew Brett] under the [BSD-2] license.
 
 ## License
 
 [MIT]
-[liran-funaro/sphinx-markdown-builder]: https://github.com/liran-funaro/sphinx-markdown-builder
-[clayrisser/sphinx-markdown-builder]: https://github.com/clayrisser/sphinx-markdown-builder
+[liran-funaro/sphinx-starlight-builder]: https://github.com/liran-funaro/sphinx-starlight-builder
+[clayrisser/sphinx-starlight-builder]: https://github.com/clayrisser/sphinx-starlight-builder
 [Clay Risser]: https://github.com/clayrisser
 [doctree2md]: https://github.com/matthew-brett/nb2plots/blob/master/nb2plots/doctree2md.py
 [Matthew Brett]: https://github.com/matthew-brett
