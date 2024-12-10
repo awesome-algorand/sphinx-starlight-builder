@@ -1,7 +1,7 @@
 """
 Escaping text for markdown and html.
 
-Characters that should be escaped in Markdown:
+Characters that should be escaped in MDX:
 ----------------------------------------------
 Emphasis chars: * and _
   Emphasis char prefix/postfix should have a non-space char to its right/left.
@@ -25,6 +25,8 @@ Lists: +, -, *, 1.
 Tables: |
 Anything starting with 4 spaces is considered a block.
   Should add force spaces (\\ ) to avoid it.
+Components: <, >
+MDX: {, }
 Escape char: \
   Should be followed by:
   Character Name
@@ -46,7 +48,7 @@ Escape char: \
 
 import re
 
-ESCAPE_RE = re.compile(r"([\\*`]|(?:^|(?<=\s|_))_)", re.M)
+ESCAPE_RE = re.compile(r"([\\*`<>{}]|(?:^|(?<=\s|_))_)", re.M)
 
 
 def escape_markdown_chars(txt: str):
