@@ -7,7 +7,7 @@ if mod_path not in sys.path:
     sys.path.insert(0, str(mod_path))
 
 
-project = "sphinx_markdown_builder"
+project = "sphinx_starlight_builder"
 copyright = "Copyright (c) 2023-2024, Liran Funaro."
 author = "Liran Funaro"
 version = "0.6.7"
@@ -16,7 +16,7 @@ extensions = [
     "sphinx.ext.autodoc",  # Core library for html generation from docstrings
     "sphinx.ext.autosummary",  # Create neat summary tables
     "sphinx.ext.intersphinx",  # Link to other project's documentation (see mapping below)
-    "sphinx_markdown_builder",
+    "sphinx_starlight_builder",
     "sphinxcontrib.httpdomain",
 ]
 

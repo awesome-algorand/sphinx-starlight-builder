@@ -31,7 +31,7 @@ from typing import TYPE_CHECKING, Callable, Dict, List, Optional, Union
 from docutils import languages, nodes
 from sphinx.util.docutils import SphinxTranslator
 
-from sphinx_markdown_builder.contexts import (
+from sphinx_starlight_builder.contexts import (
     CommaSeparatedContext,
     ContextStatus,
     DocInfoContext,
@@ -49,11 +49,12 @@ from sphinx_markdown_builder.contexts import (
     UniqueString,
     WrappedContext,
     FootNoteContext,
+    AsideContext,
 )
-from sphinx_markdown_builder.escape import escape_html_quote, escape_markdown_chars
+from sphinx_starlight_builder.escape import escape_html_quote, escape_markdown_chars
 
 if TYPE_CHECKING:  # pragma: no cover
-    from sphinx_markdown_builder import MarkdownBuilder
+    from sphinx_starlight_builder import MarkdownBuilder
 
 VISIT_DEPART_PATTERN = re.compile("(visit|depart)_(.+)")
 SKIP = UniqueString("skip")
@@ -132,6 +133,8 @@ def pushing_status(method):
 class MarkdownTranslator(SphinxTranslator):  # pylint: disable=too-many-public-methods
     def __init__(self, document: nodes.document, builder: "MarkdownBuilder"):
         super().__init__(document, builder)
+        # Tracks whether we've added an aside or not so we know if we need to import the Aside component
+        self._has_aside = False
         self.builder: "MarkdownBuilder" = builder
         # noinspection PyUnresolvedReferences
         self.language = languages.get_language(self.settings.language_code, document.reporter)
@@ -170,9 +173,10 @@ class MarkdownTranslator(SphinxTranslator):  # pylint: disable=too-many-public-m
             ctx = self.ctx if last_ctx.params.target == "body" else self._doc_info
             ctx.add(last_ctx.make(), last_ctx.params.prefix_eol, last_ctx.params.suffix_eol)
 
-    def _push_box(self, title: str):
-        self.add(f"#### {title}", prefix_eol=2)
-        self._push_context(SubContext(SubContextParams(1, 2)))
+    def _push_aside(self, title: str):
+        """Create an aside for MDX output"""
+        self._has_aside = True
+        self._push_context(AsideContext(title))
 
     @property
     def status(self) -> ContextStatus:
@@ -196,6 +200,20 @@ class MarkdownTranslator(SphinxTranslator):  # pylint: disable=too-many-public-m
         assert len(self._ctx_queue) == 1
 
         ctx = SubContext()
+        
+        # Generate frontmatter
+        title = posixpath.basename(self.builder.current_doc_name)
+        frontmatter = f"title: \"{title}\""
+        
+        ctx.add("---", prefix_eol=0, suffix_eol=1)
+        ctx.add(frontmatter, prefix_eol=0, suffix_eol=1)
+        ctx.add("---", prefix_eol=0, suffix_eol=1)
+
+        # Handle imports
+        if self._has_aside:
+            ctx.add("import { Aside } from '@astrojs/starlight/components';", prefix_eol=0, suffix_eol=1)
+
+        # Add the rest of the document
         for sub_ctx in (self._doc_info, self._ctx_queue[0]):
             ctx.add(sub_ctx.make().strip(), prefix_eol=2, suffix_eol=1)
         ctx.force_eol(1)
@@ -306,26 +324,26 @@ class MarkdownTranslator(SphinxTranslator):  # pylint: disable=too-many-public-m
     @pushing_context
     def visit_important(self, _node):
         """Sphinx important directive."""
-        self._push_box("IMPORTANT")
+        self._push_aside("IMPORTANT")
 
     @pushing_context
     def visit_warning(self, _node):
         """Sphinx warning directive."""
-        self._push_box("WARNING")
+        self._push_aside("WARNING")
 
     @pushing_context
     def visit_note(self, _node):
         """Sphinx note directive."""
-        self._push_box("NOTE")
+        self._push_aside("NOTE")
 
     @pushing_context
     def visit_seealso(self, _node):
         """Sphinx see also directive."""
-        self._push_box("SEE ALSO")
+        self._push_aside("SEE ALSO")
 
     @pushing_context
     def visit_attention(self, _node):
-        self._push_box("ATTENTION")
+        self._push_aside("ATTENTION")
 
     def visit_image(self, node):
         """Image directive."""
@@ -617,6 +635,12 @@ class MarkdownTranslator(SphinxTranslator):  # pylint: disable=too-many-public-m
     def visit_desc(self, node):
         self._push_status(desc_type=node.attributes.get("desctype", ""))
 
+    def depart_desc_name(self, node):
+        # Pop the title context before we get to params so the header is just the method name
+        # This results in much cleaner TOC
+        self._pop_context()
+        self.add(node.astext())
+
     @pushing_context
     def visit_desc_signature(self, node):
         """the main signature of class/method"""
@@ -674,7 +698,7 @@ class MarkdownTranslator(SphinxTranslator):  # pylint: disable=too-many-public-m
         Type will hold something like 'deprecated'
         """
         node_type = node.attributes["type"].capitalize()
-        self._push_box(node_type)
+        self._push_aside(node_type)
 
     ################################################################################
     # tables

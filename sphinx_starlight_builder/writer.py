@@ -4,7 +4,7 @@ Custom docutils writer for markdown.
 
 from docutils import frontend, writers
 
-from sphinx_markdown_builder.translator import MarkdownTranslator
+from sphinx_starlight_builder.translator import MarkdownTranslator
 
 
 class MarkdownWriter(writers.Writer):

@@ -1,4 +1,4 @@
-.. Taken from https://github.com/FabianNiehaus/sphinx-markdown-builder-toctree-test
+.. Taken from https://github.com/FabianNiehaus/sphinx-starlight-builder-toctree-test
 .. Sphinx-Markdown-Builder TocTree Test documentation master file, created by
    sphinx-quickstart on Thu Sep  3 12:25:35 2020.
    You can adapt this file completely to your liking, but it should at least

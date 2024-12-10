@@ -11,7 +11,7 @@ from typing import Any, Callable, Dict, Generic, Iterator, List, Optional, Type,
 
 from tabulate import tabulate
 
-from sphinx_markdown_builder.escape import escape_html_quote
+from sphinx_starlight_builder.escape import escape_html_quote
 
 
 class UniqueString(str):
@@ -333,10 +333,19 @@ class TitleContext(NoLineBreakContext):
 
     @property
     def section_prefix(self):
-        return "#" * self.level
+        # Decrease the heading level for better starlight TOC
+        return "#" * (self.level - 1)
 
     def make(self):
+        # Don't make h1 because this is down by starlight based on the front matter
+        if self.level == 1:
+            return ""
+
+        # The first header is typically the only one at that level, so might as well remove it so we can decrease every other heading level
         content = super().make()
+        if content == "Package Contents" or content == "Module Contents":
+            return ""
+
         assert len(content) > 0, "Empty title"
         return f"{self.section_prefix} {content}"
 
@@ -378,6 +387,34 @@ class FootNoteContext(NoLineBreakContext):
         content = super().make()
         label = self.label_body.make() or self.names
         return f"* <a id='{self.ids}'>**[{label}]**</a> {content}"
+
+
+class AsideContext(SubContext):
+    """Context for Starlight asides"""
+    def __init__(self, aside_type: str, params: SubContextParams = SubContextParams()):
+        super().__init__(params)
+        self.aside_type = aside_type
+
+    def make(self) -> str:
+        content = super().make()
+        
+        # note asides (the default) are blue and display an information icon.
+        # tip asides are purple and display a rocket icon.
+        # caution asides are yellow and display a triangular warning icon.
+        # danger asides are red and display an octagonal warning icon.
+        # https://starlight.astro.build/components/asides/
+
+        sphinx_aside_mapping = {
+            "IMPORTANT": {"type": "caution", "title": "Important"},
+            "NOTE": {"type": "note", "title": "Note"},
+            "WARNING": {"type": "caution", "title": "Warning"},
+            "ATTENTION": {"type": "caution", "title": "Attention"},
+            "SEE ALSO": {"type": "tip", "title": "See Also"},
+        }
+
+        type = sphinx_aside_mapping[self.aside_type]['type']
+        title = sphinx_aside_mapping[self.aside_type]['title']
+        return f"<Aside type=\"{type}\" title=\"{title}\">{content}</Aside>"
 
 
 _ContextT = TypeVar("_ContextT", bound=SubContext)

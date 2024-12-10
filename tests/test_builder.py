@@ -55,7 +55,7 @@ def _chmod_output(build_path: str, apply_func):
     for root, dirs, files in os.walk(build_path):
         for file_name in files:
             _, ext = os.path.splitext(file_name)
-            if ext == ".md":
+            if ext == ".mdx":
                 p = Path(root, file_name)
                 p.chmod(apply_func(p.stat().st_mode))
 

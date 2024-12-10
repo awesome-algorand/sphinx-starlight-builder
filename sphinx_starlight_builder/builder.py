@@ -1,5 +1,5 @@
 """
-Custom docutils builder for markdown.
+Custom docutils builder for starlight mdx.
 """
 
 import os
@@ -15,8 +15,8 @@ from sphinx.locale import __
 from sphinx.util import logging
 from sphinx.util.osutil import ensuredir, os_path
 
-from sphinx_markdown_builder.translator import MarkdownTranslator
-from sphinx_markdown_builder.writer import MarkdownWriter
+from sphinx_starlight_builder.translator import MarkdownTranslator
+from sphinx_starlight_builder.writer import MarkdownWriter
 
 logger = logging.getLogger(__name__)
 
@@ -36,14 +36,14 @@ def get_mod_time_if_exists(file_path, log_error=True):
 
 
 class MarkdownBuilder(Builder):
-    name = "markdown"
-    format = "markdown"
-    epilog = __("The markdown files are in %(outdir)s.")
+    name = "starlight"
+    format = "mdx"
+    epilog = __("The mdx files are in %(outdir)s.")
 
     allow_parallel = True
     default_translator_class = MarkdownTranslator
 
-    out_suffix = ".md"
+    out_suffix = ".mdx"
 
     def __init__(self, app: Sphinx, env: BuildEnvironment = None):
         super().__init__(app, env)

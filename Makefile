@@ -49,7 +49,7 @@ test-diff:
 
 test: test-diff
 	@echo "Unit testing and coverage report..."
-	@pytest --cov=sphinx_markdown_builder
+	@pytest --cov=sphinx_starlight_builder
 
 
 diff:
@@ -58,16 +58,16 @@ diff:
 
 lint:
 	@echo "Validate coding conventions with black"
-	black sphinx_markdown_builder --check --diff
+	black sphinx_starlight_builder --check --diff
 	@echo "Lint with flake8"
 	flake8 . --count --select=E,F,W,C --show-source \
 			--max-complexity=10 --max-line-length=120 --statistics \
 			--exclude "venv*,.venv,.git"
 	@ echo "Lint with pylint"
-	pylint sphinx_markdown_builder --disable C0116,C0115
+	pylint sphinx_starlight_builder --disable C0116,C0115
 
 
 release:
 	@rm -rf dist/*
 	python3 -m build || exit
-	python3 -m twine upload --repository sphinx-markdown-builder dist/*
+	python3 -m twine upload --repository sphinx-starlight-builder dist/*
