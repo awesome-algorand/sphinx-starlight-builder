@@ -4,8 +4,10 @@ A Sphinx extension to add MDX generation support for starlight documentation web
 
 ## Install
 
+This package is not yet published, but can installed directly from GitHub:
+
 ```sh
-pip3 install sphinx-starlight-builder==0.6.7
+pip install git+https://github.com/joe-p/sphinx-starlight-builder
 ```
 
 ## Usage
