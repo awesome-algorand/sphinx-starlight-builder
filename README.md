@@ -23,7 +23,7 @@ extensions = [
 Build markdown files with `sphinx-build` command
 
 ```sh
-sphinx-build -M markdown ./docs ./build
+sphinx-build -M starlight ./docs ./build
 ```
 
 ## Configurations
