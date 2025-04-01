@@ -146,7 +146,7 @@ class MarkdownTranslator(SphinxTranslator):  # pylint: disable=too-many-public-m
         self._doc_info: SubContext = SubContext()
         self._status_queue: List[ContextStatus] = [ContextStatus()]
 
-        if self.config.markdown_docinfo:
+        if self.config.starlight_docinfo:
             self._add_doc_info_from_config()
 
     def _add_doc_info_from_config(self):
@@ -481,7 +481,7 @@ class MarkdownTranslator(SphinxTranslator):  # pylint: disable=too-many-public-m
     @pushing_status
     def visit_section(self, node):
         self.ensure_eol(2)
-        if self.config.markdown_anchor_sections:
+        if self.config.starlight_anchor_sections:
             for anchor in node.get("ids", []):
                 self._add_anchor(anchor)
 
@@ -518,7 +518,7 @@ class MarkdownTranslator(SphinxTranslator):  # pylint: disable=too-many-public-m
 
     def _adjust_url(self, url: str):
         """Replace `refuri` in reference with HTTP address, if possible"""
-        if not self.config.markdown_http_base:
+        if not self.config.starlight_http_base:
             return url
 
         # If HTTP page build URL known, make link relative to that.
@@ -529,7 +529,7 @@ class MarkdownTranslator(SphinxTranslator):  # pylint: disable=too-many-public-m
             this_dir = posixpath.dirname(this_doc)
             if this_dir:
                 url = posixpath.normpath(f"{this_dir}/{url}")
-        return f"{self.config.markdown_http_base}/{url}"
+        return f"{self.config.starlight_http_base}/{url}"
 
     def _fetch_ref_uri(self, node):
         uri = node.get("refuri", "")
@@ -646,7 +646,7 @@ class MarkdownTranslator(SphinxTranslator):  # pylint: disable=too-many-public-m
         """the main signature of class/method"""
 
         # Insert anchors if enabled by the config
-        if self.config.markdown_anchor_signatures:
+        if self.config.starlight_anchor_signatures:
             for anchor in node.get("ids", []):
                 self._add_anchor(anchor)
 

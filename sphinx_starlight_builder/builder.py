@@ -79,7 +79,7 @@ class MarkdownBuilder(Builder):
         By default, we link to the currently generated markdown files.
         But, we also support linking to external document (e.g., an html web page).
         """
-        return f"{docname}{self.config.markdown_uri_doc_suffix}"
+        return f"{docname}{self.config.starlight_uri_doc_suffix}"
 
     def prepare_writing(self, docnames: Set[str]):
         self.writer = MarkdownWriter(self)

@@ -32,18 +32,18 @@ sphinx-build -M starlight ./docs ./build
 
 You can add the following configurations to your `conf.py` file:
 
-- `markdown_anchor_sections`/`markdown_anchor_signatures`: If set to `True`,
+- `starlight_anchor_sections`/`starlight_anchor_signatures`: If set to `True`,
   then anchors will be added before each section/function/class signature.
   This allows references to a specific anchor in the document.
-- `markdown_docinfo`: Adds metadata to the top of each document containing author, copyright, and version.
-- `markdown_http_base`: If set, all references will link to this prefix address
-- `markdown_uri_doc_suffix`: If set, all references will link to documents with this suffix.
+- `starlight_docinfo`: Adds metadata to the top of each document containing author, copyright, and version.
+- `starlight_http_base`: If set, all references will link to this prefix address
+- `starlight_uri_doc_suffix`: If set, all references will link to documents with this suffix.
 
 For example, if your `conf.py` file have the following configuration:
 
 ```python
-markdown_http_base = "https://your-domain.com/docs"
-markdown_uri_doc_suffix = ".html"
+starlight_http_base = "https://your-domain.com/docs"
+starlight_uri_doc_suffix = ".html"
 ```
 
 Then a reference to `your-doc-name#your-header` will be substituted with `https://your-domain.com/docs/your-doc-name.html#your-header`.

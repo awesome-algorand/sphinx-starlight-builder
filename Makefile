@@ -34,8 +34,8 @@ test-diff:
 
 	@echo "Building markdown with configuration overrides..."
 	@$(SPHINX_BUILD) -M markdown "$(SOURCE_DIR)" "$(BUILD_DIR)/overrides" $(SPHINX_OPTS) $(O) -a \
-			-D markdown_http_base="https://localhost" -D markdown_uri_doc_suffix=".html" \
-			-D markdown_docinfo=True -D markdown_anchor_sections=True -D markdown_anchor_signatures=True \
+			-D starlight_http_base="https://localhost" -D starlight_uri_doc_suffix=".html" \
+			-D starlight_docinfo=True -D starlight_anchor_sections=True -D starlight_anchor_signatures=True \
 			-D autodoc_typehints=signature
 
 	@# Copy just the files for verification
